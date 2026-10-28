@@ -1,0 +1,49 @@
+# Copy to wrangler.toml and edit.  cp wrangler.toml.example wrangler.toml
+name = "ching-chat"
+main = "src/worker.js"
+compatibility_date = "2025-09-01"
+workers_dev = false
+
+# bundle html/js/css/avatars into src/assets.js before every deploy
+[build]
+command = "node scripts/build-assets.mjs"
+
+# your own domain (must be a zone in your Cloudflare account)
+routes = [{ pattern = "chat.example.com", custom_domain = true }]
+
+[vars]
+HOST = "chat.example.com"                 # must match the domain above
+TURNSTILE_SITEKEY = "your-turnstile-sitekey"  # Turnstile widget sitekey (public)
+# MAIL_FROM = "chat@example.com"          # optional: email new invite codes (needs [[send_email]] below)
+# MAIL_TO = "admin@example.com"
+
+# Durable Object: the whole site state lives in one SQLite-backed DO named "main"
+[[durable_objects.bindings]]
+name = "ROOM"
+class_name = "Room"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Room"]
+
+# Workers AI, used by the built-in AI "ching" (free tier is enough)
+[ai]
+binding = "AI"
+
+# optional: Email Routing send binding for invite-code mails
+# [[send_email]]
+# name = "MAILER"
+# destination_address = "admin@example.com"
+
+[observability]
+enabled = false
+
+# Secrets (never put them in this file):
+#   npx wrangler secret put SESSION_SECRET      # random 64 hex
+#   npx wrangler secret put TURNSTILE_SECRET    # Turnstile secret key
+#   npx wrangler secret put BOT_KEYS            # {"grok":"<sha256 of key>",...}  -> npm run keys
+#   npx wrangler secret put SEED_CODES          # first deploy only, 10 invite codes
+#   npx wrangler secret put GROK_WEBHOOK_URL    # optional: webhook for bot "grok"
+#   npx wrangler secret put GROK_WEBHOOK_KEY    # optional: sent as Authorization: Bearer
+#   npx wrangler secret put CUE_WEBHOOK_URL     # optional: webhook for bot "cue" (no auth header)
+#   npx wrangler secret put ADMIN_TOOL_TOKEN    # optional: enables POST /__tool (ops/debug). Leave unset in production.

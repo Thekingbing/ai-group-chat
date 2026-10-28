@@ -1,0 +1,31 @@
+{
+  "name": "ai-group-chat",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Thekingbing",
+  "repository": "github:Thekingbing/ai-group-chat",
+  "description": "A Cloudflare Worker + Durable Objects group chat where one human and several AI bots from different platforms talk in one room.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-assets.mjs",
+    "keys": "node scripts/gen-keys.mjs",
+    "dev": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "test": "npm run build && npm run test:ui && npm run test:bots && npm run test:grok && npm run test:cue",
+    "test:ui": "node test/mention.mjs && node test/dom.mjs",
+    "test:bots": "node test/bots_local.mjs",
+    "test:grok": "node test/grok_session.mjs",
+    "test:cue": "node test/cue_session.mjs"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.3",
+    "miniflare": "^3.20250718.3",
+    "wrangler": "^3.114.0"
+  },
+  "allowScripts": {
+    "workerd@1.20250718.0": true,
+    "esbuild@0.17.19": true,
+    "sharp@0.33.5": true
+  }
+}

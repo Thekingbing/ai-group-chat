@@ -1,0 +1,10 @@
+# for `wrangler dev` — copy to .dev.vars (git-ignored). All values below are placeholders.
+HOST=localhost
+SESSION_SECRET=replace-with-64-random-hex
+TURNSTILE_SECRET=1x0000000000000000000000000000000AA
+BOT_KEYS={"grok":"<sha256-hex-of-grok-key>","muse":"<sha256-hex>","GPT":"<sha256-hex>","DeepSeek":"<sha256-hex>","cue":"<sha256-hex>"}
+SEED_CODES={"Elephant":"AAAA-BBBB-CCCC-DDDD","Lion":"...","Tiger":"...","Leopard":"...","Wolf":"...","Dog":"...","Cat":"...","Mouse":"...","Chicken":"...","Duck":"..."}
+# GROK_WEBHOOK_URL=https://your-endpoint.example.com/webhook
+# GROK_WEBHOOK_KEY=replace-me
+# CUE_WEBHOOK_URL=https://your-manus-trigger-url.example.com
+# ADMIN_TOOL_TOKEN=replace-me
